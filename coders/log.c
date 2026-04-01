@@ -6,7 +6,7 @@
 /*   By: ael-bakk <ael-bakk@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 20:33:33 by ael-bakk          #+#    #+#             */
-/*   Updated: 2026/04/01 10:45:55 by ael-bakk         ###   ########.fr       */
+/*   Updated: 2026/04/01 15:30:05 by ael-bakk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	log_compiling(t_simulation *sim, t_coder *coder)
 	log_message(sim, coder, "is compiling");
 }
 
-void	log_debbuging(t_simulation *sim, t_coder *coder)
+void	log_debugging(t_simulation *sim, t_coder *coder)
 {
 	log_message(sim, coder, "is debugging");
 }

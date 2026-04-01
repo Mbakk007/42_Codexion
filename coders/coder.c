@@ -6,7 +6,7 @@
 /*   By: ael-bakk <ael-bakk@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 10:53:32 by ael-bakk          #+#    #+#             */
-/*   Updated: 2026/04/01 11:18:38 by ael-bakk         ###   ########.fr       */
+/*   Updated: 2026/04/01 16:27:55 by ael-bakk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,32 @@ void	*coder_thread(void *arg)
 
 	coder = (t_coder *)arg;
 	sim = coder->left_dongle->sim;
-	coder->deadline = get_elapsed_ms(sim) + sim->params.time_to_burnout_ms;
 	while (sim->simulation_running)
 	{
-		if (get_elapsed_ms(sim) > coder->deadline)
+		pthread_mutex_lock(&sim->state_mutex);
+		if (sim->someone_burned_out || sim->all_done)
 		{
-			coder->state = BURNED_OUT;
-			log_message(sim, coder, "burned out");
-			sim->someone_burned_out = 1;
-			return (NULL);
+			pthread_mutex_unlock(&sim->state_mutex);
+			break ;
 		}
+		pthread_mutex_unlock(&sim->state_mutex);
 		wait_for_dongles(coder);
 		start_compiling(coder);
+		pthread_mutex_lock(&sim->state_mutex);
+		if (sim->someone_burned_out || sim->all_done)
+		{
+			pthread_mutex_unlock(&sim->state_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&sim->state_mutex);
 		start_debugging(coder);
+		pthread_mutex_lock(&sim->state_mutex);
+		if (sim->someone_burned_out || sim->all_done)
+		{
+			pthread_mutex_unlock(&sim->state_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&sim->state_mutex);
 		start_refactoring(coder);
 	}
 	return (NULL);
@@ -45,14 +58,28 @@ void	*coder_thread(void *arg)
 static void	start_compiling(t_coder *coder)
 {
 	t_simulation	*sim;
+	int				i;
 
 	sim = coder->left_dongle->sim;
+	pthread_mutex_lock(&sim->state_mutex);
+	if (!sim->has_started)
+	{
+		sim->has_started = 1;
+		i = 0;
+		while (i < sim->params.number_of_coders)
+		{
+			sim->coders[i].deadline = get_elapsed_ms(sim)
+				+ sim->params.time_to_burnout_ms;
+			i++;
+		}
+	}
+	pthread_mutex_unlock(&sim->state_mutex);
 	coder->state = COMPILING;
-	log_compiling(sim, coder);
+	log_message(sim, coder, "is compiling");
 	sleep_ms(sim->params.time_to_compile_ms);
 	coder->compiles_completed++;
 	release_dongles(coder);
-	coder->deadline = get_elapsed_ms(sim) + sim->params.time_to_burnout_ms;
+	coder->last_compile_start = get_elapsed_ms(sim);
 }
 
 // Simulate debugging
@@ -61,8 +88,15 @@ static void	start_debugging(t_coder *coder)
 	t_simulation	*sim;
 
 	sim = coder->left_dongle->sim;
+	pthread_mutex_lock(&sim->state_mutex);
+	if (sim->someone_burned_out)
+	{
+		pthread_mutex_unlock(&sim->state_mutex);
+		return ;
+	}
+	pthread_mutex_unlock(&sim->state_mutex);
 	coder->state = DEBUGGING;
-	log_debugging(sim, coder);
+	log_message(sim, coder, "is debugging");
 	sleep_ms(sim->params.time_to_debug_ms);
 }
 
@@ -72,9 +106,18 @@ static void	start_refactoring(t_coder *coder)
 	t_simulation	*sim;
 
 	sim = coder->left_dongle->sim;
+	pthread_mutex_lock(&sim->state_mutex);
+	if (sim->someone_burned_out)
+	{
+		pthread_mutex_unlock(&sim->state_mutex);
+		return ;
+	}
+	pthread_mutex_unlock(&sim->state_mutex);
 	coder->state = REFACTORING;
-	log_refactoring(sim, coder);
+	log_message(sim, coder, "is refactoring");
 	sleep_ms(sim->params.time_to_refactor_ms);
+	pthread_mutex_lock(&sim->state_mutex);
 	if (coder->compiles_completed >= sim->params.number_of_compiles_required)
 		sim->all_done = 1;
+	pthread_mutex_unlock(&sim->state_mutex);
 }

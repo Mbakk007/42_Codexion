@@ -6,7 +6,7 @@
 /*   By: ael-bakk <ael-bakk@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/22 11:03:45 by ael-bakk          #+#    #+#             */
-/*   Updated: 2026/03/31 18:31:06 by ael-bakk         ###   ########.fr       */
+/*   Updated: 2026/04/01 14:09:00 by ael-bakk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	is_digit(char *s)
 	return (1);
 }
 
-static int	pasre_long(char *s, long *result)
+static int	parse_long(char *s, long *result)
 {
 	int		i;
 	int		d;

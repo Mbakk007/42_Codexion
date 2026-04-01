@@ -6,7 +6,7 @@
 /*   By: ael-bakk <ael-bakk@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:40:36 by ael-bakk          #+#    #+#             */
-/*   Updated: 2026/04/01 11:24:20 by ael-bakk         ###   ########.fr       */
+/*   Updated: 2026/04/01 16:21:03 by ael-bakk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_dongle
 	t_simulation			*sim;
 	pthread_mutex_t			mutex;
 	pthread_cond_t			cond;
-	t_priority_coder		wait_queue;
+	t_priority_queue		wait_queue;
 }							t_dongle;
 
 // Enum for coder state
@@ -106,6 +106,7 @@ typedef struct s_simulation
 	int						simulation_running;
 	int						someone_burned_out;
 	int						all_done;
+	int						has_started;
 	long					start_time;
 }							t_simulation;
 
@@ -136,5 +137,9 @@ void						*coder_thread(void *arg);
 // dongle.c
 void						release_dongles(t_coder *coder);
 void						wait_for_dongles(t_coder *coder);
+
+// main.c
+void						monitor_simulation(t_simulation *sim);
+int							main(int argc, char **argv);
 
 #endif

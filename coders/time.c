@@ -6,7 +6,7 @@
 /*   By: ael-bakk <ael-bakk@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 20:47:02 by ael-bakk          #+#    #+#             */
-/*   Updated: 2026/04/01 10:41:29 by ael-bakk         ###   ########.fr       */
+/*   Updated: 2026/04/01 15:30:31 by ael-bakk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ long	get_timestamp_ms(void)
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_sec / 1000));
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
 long	get_elapsed_ms(t_simulation *sim)
