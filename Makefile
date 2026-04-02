@@ -15,7 +15,9 @@ SRCS := \
 	coders/scheduler.c \
 	coders/queue.c \
 	coders/monitor.c \
-	coders/utils.c
+	coders/utils.c \
+	coders/sim.c \
+	coders/sim_alloc.c
 
 OBJS := $(SRCS:.c=.o)
 

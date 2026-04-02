@@ -6,7 +6,7 @@
 /*   By: ael-bakk <ael-bakk@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 15:35:39 by ael-bakk          #+#    #+#             */
-/*   Updated: 2026/04/02 15:41:07 by ael-bakk         ###   ########.fr       */
+/*   Updated: 2026/04/02 15:56:55 by ael-bakk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	is_digits(const char *s)
 	}
 	return (1);
 }
-#include "codexion.h"
 
 int	ft_atoi(const char *s)
 {

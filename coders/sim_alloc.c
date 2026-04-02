@@ -1,26 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   queue.c                                            :+:      :+:    :+:   */
+/*   sim_alloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-bakk <ael-bakk@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/02 17:53:23 by ael-bakk          #+#    #+#             */
-/*   Updated: 2026/04/02 17:53:28 by ael-bakk         ###   ########.fr       */
+/*   Created: 2026/04/02 16:14:15 by ael-bakk          #+#    #+#             */
+/*   Updated: 2026/04/02 16:20:40 by ael-bakk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-struct s_queue { int unused; };
-
-int	queue_init(t_sim *sim)
+int	sim_alloc(t_sim *sim)
 {
-	(void)sim;
+	int	i;
+
+	sim->coders = malloc(sizeof(t_coder) * sim->params.n_coders);
+	if (!sim->coders)
+		return (0);
+	i = 0;
+	while (i < sim->params.n_coders)
+	{
+		sim->coders[i].id = i + 1;
+		sim->coders[i].sim = sim;
+		i++;
+	}
 	return (1);
 }
 
-void	queue_destroy(t_sim *sim)
+void	sim_free(t_sim *sim)
 {
-	(void)sim;
+	free(sim->coders);
+	sim->coders = NULL;
 }
