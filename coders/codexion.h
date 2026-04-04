@@ -6,7 +6,7 @@
 /*   By: ael-bakk <ael-bakk@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:40:36 by ael-bakk          #+#    #+#             */
-/*   Updated: 2026/04/03 11:21:24 by ael-bakk         ###   ########.fr       */
+/*   Updated: 2026/04/05 00:25:43 by ael-bakk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,10 @@ typedef struct s_dongle
 }						t_dongle;
 
 // args.c
-int						parse_n_coders(int *out, const char *s);
-int						parse_pos_long(long *out, const char *s);
 int						parse_args(t_params *p, int argc, char **argv);
-int						parse_pos_int(int *out, const char *s);
-int						is_scheduler_ok(const char *s);
 
 // utils.c
-int						ft_strcmp(const char *s1, const char *s2);
 int						is_digits(const char *s);
-int						ft_atoi(const char *s);
 long					ft_atol(const char *s);
 
 // sim.c

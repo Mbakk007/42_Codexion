@@ -6,7 +6,7 @@
 /*   By: ael-bakk <ael-bakk@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 15:53:54 by ael-bakk          #+#    #+#             */
-/*   Updated: 2026/04/02 21:33:28 by ael-bakk         ###   ########.fr       */
+/*   Updated: 2026/04/04 23:55:30 by ael-bakk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ int	sim_init(t_sim *sim, const t_params *param)
 	if (pthread_mutex_init(&sim->print_mtx, NULL) != 0)
 		return (0);
 	if (pthread_mutex_init(&sim->stop_mtx, NULL) != 0)
-	{
-		pthread_mutex_destroy(&sim->print_mtx);
-		return (0);
-	}
+		return (pthread_mutex_destroy(&sim->print_mtx), 0);
 	if (!sim_alloc(sim))
 	{
 		pthread_mutex_destroy(&sim->stop_mtx);

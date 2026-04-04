@@ -6,13 +6,13 @@
 /*   By: ael-bakk <ael-bakk@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 10:53:32 by ael-bakk          #+#    #+#             */
-/*   Updated: 2026/04/03 11:18:13 by ael-bakk         ###   ########.fr       */
+/*   Updated: 2026/04/05 00:08:34 by ael-bakk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-static int	reached_quota(t_coder *c)
+static int	reached_compile_count(t_coder *c)
 {
 	int	done;
 
@@ -29,10 +29,7 @@ static int	coder_cycle(t_coder *c)
 	if (!dongles_take_two(c))
 		return (0);
 	if (sim_should_stop(c->sim))
-	{
-		dongles_release_two(c);
-		return (0);
-	}
+		return (dongles_release_two(c), 0);
 	pthread_mutex_lock(&c->state_mtx);
 	c->last_compile_start_ms = sim_time_ms(c->sim);
 	pthread_mutex_unlock(&c->state_mtx);
@@ -62,7 +59,7 @@ void	*coder_routine(void *arg)
 	{
 		if (!coder_cycle(c))
 			break ;
-		if (reached_quota(c))
+		if (reached_compile_count(c))
 			break ;
 	}
 	return (NULL);

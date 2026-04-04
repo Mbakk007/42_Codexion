@@ -6,7 +6,7 @@
 /*   By: ael-bakk <ael-bakk@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 15:17:50 by ael-bakk          #+#    #+#             */
-/*   Updated: 2026/04/03 11:26:45 by ael-bakk         ###   ########.fr       */
+/*   Updated: 2026/04/04 23:49:37 by ael-bakk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	print_usage(void)
 {
 	write(2, "Usage: ./codexion n_coders t_burnout t_compile t_debug", 54);
-	write(2, " t_refactor must_compile dongle_cooldown fifo|edf\n", 53);
+	write(2, " t_refactor must_compile dongle_cooldown fifo|edf\n", 50);
 }
 
 static void	print_error(void)
@@ -30,15 +30,9 @@ int	main(int argc, char **argv)
 	t_sim		sim;
 
 	if (argc != 9)
-	{
-		print_usage();
-		return (1);
-	}
+		return (print_error(), 1);
 	if (!parse_args(&p, argc, argv))
-	{
-		print_error();
-		return (1);
-	}
+		return (print_error(), 1);
 	if (!sim_init(&sim, &p))
 		return (1);
 	if (!sim_run(&sim))
